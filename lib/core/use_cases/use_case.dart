@@ -5,4 +5,4 @@ abstract class UseCase<Type, Param> {
   Future<Either<Failure, Type>> call([Param parameter]);
 }
 
-class NoParameter{}
+class NoParameter {}
