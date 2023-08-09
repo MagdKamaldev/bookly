@@ -13,10 +13,20 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
 
   @override
   Future<List<BookEntity>> fecthFeaturedBooks() async {
-    var data = await apiService.get(endpoint: "volumes?q=computer science");
+    var data = await apiService.get(endpoint: "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
   
     List<BookEntity> books = getBooksList(data);
     return books;
+  }
+
+  
+  @override
+  Future<List<BookEntity>> fecthNewestBooks() async{
+     var data = await apiService.get(endpoint: "volumes?q=computer science&Filtering=free-ebooks&Sorting=newest&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
+  
+    List<BookEntity> books = getBooksList(data);
+    return books;
+  
   }
 
   List<BookEntity> getBooksList(Map<String, dynamic> data) {
@@ -27,9 +37,4 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
     return books;
   }
 
-  @override
-  Future<List<BookEntity>> fecthNewestBooks() {
-    // TODO: implement fecthNewestBooks
-    throw UnimplementedError();
-  }
 }
