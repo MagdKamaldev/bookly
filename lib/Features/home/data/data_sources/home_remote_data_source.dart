@@ -20,11 +20,9 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
             "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
 
     List<BookEntity> books = getBooksList(data);
-    saveBooksData(books,kFeaturedBox);
+    saveBooksData(books, kFeaturedBox);
     return books;
   }
-
-
 
   @override
   Future<List<BookEntity>> fecthNewestBooks() async {
@@ -33,6 +31,7 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
             "volumes?q=computer science&Filtering=free-ebooks&Sorting=newest&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
 
     List<BookEntity> books = getBooksList(data);
+    saveBooksData(books,kNewestBox);
     return books;
   }
 
