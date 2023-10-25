@@ -1,16 +1,18 @@
 # clean_arch_bookly_app
 
-A new Flutter project.
+- the first step is the entity which is the core business object 
+# BookEntity(
+#      {required this.bookId,
+#     required this.image,
+#    required this.title,
+#   required this.authorName,
+#  required this.price,});
 
-## Getting Started
+-then we create a repo for each feature which just determines what is going to happen not how 
 
-This project is a starting point for a Flutter application.
+# abstract class HomeRepo {
+  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks();
+  Future<Either<Failure, List<BookEntity>>> fecthNewestBooks();
+}
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
