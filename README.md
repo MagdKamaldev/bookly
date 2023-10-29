@@ -5,12 +5,14 @@
 
 ### 1-the first step is the entity which is the core business object 
 
- BookEntity(
+``` dart
+BookEntity(
       {required this.bookId,
      required this.image,
     required this.title,
    required this.authorName,
   required this.price,});
+``` 
 
 ### 2-then we create a repo for each feature which just determines what is going to happen not how 
 
@@ -29,6 +31,7 @@ abstract class HomeRepo {
   Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks();
   Future<Either<Failure, List<BookEntity>>> fecthNewestBooks();
 }
+
 
 ### 5-
 
