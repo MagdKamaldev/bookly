@@ -1,6 +1,6 @@
 # clean_arch_bookly_app
 
-##A) Domain Layer
+## A) Domain Layer
 
 
 ### 1-the first step is the entity which is the core business object 
