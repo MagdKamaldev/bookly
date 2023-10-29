@@ -29,7 +29,7 @@ abstract class HomeRepo {
 class Failure{}
 ```
 
-### 4-then we import dartz package to use Either class to handle success or failure cases and update the repo to be like
+### [4-then we import dartz package to use Either class to handle success or failure cases and update the repo to be like](https://github.com/MagdKamaldev/bookly/blob/main/pubspec.yaml)
 
 ``` dart
 abstract class HomeRepo {
