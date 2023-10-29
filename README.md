@@ -1,6 +1,6 @@
 # clean_arch_bookly_app
 
-## 1-the first step is the entity which is the core business object 
+### 1-the first step is the entity which is the core business object 
 
  BookEntity(
       {required this.bookId,
