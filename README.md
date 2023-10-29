@@ -3,7 +3,7 @@
 ## A) Domain Layer
 
 
-### 1-the first step is the entity which is the core business object 
+### [1-the first step is the entity which is the core business object](lib\Features\home\domain\entities\book_entity.dart)
 
 ``` dart
 BookEntity(
