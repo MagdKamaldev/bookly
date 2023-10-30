@@ -80,6 +80,23 @@ class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
 }
 
 ```
+### 7- fetch newest books use case will be like :
+
+``` dart
+class FetchNewestBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
+  final HomeRepo homeRepo;
+  FetchNewestBooksUseCase(this.homeRepo);
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> call(
+      [NoParameter? parameter]) async {
+    return await homeRepo.fecthNewestBooks();
+  }
+}
+
+```
+
+
 
 
 
