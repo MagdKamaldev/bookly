@@ -39,7 +39,7 @@ abstract class HomeRepo {
 ```
 
 
-### 5- [then we create a usecase for each feature which is the core business logic](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/use_cases/fetch_featured_books_use_case.dart)
+### 5- [then we create a usecase for each feature](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/use_cases/fetch_featured_books_use_case.dart)
 
 ```dart 
 
@@ -52,6 +52,33 @@ class FetchFeaturedBooksUseCase {
     return await homeRepo.fecthFeaturedBooks();
   }
 }
+```
+
+### 6- we use generic use case to handle use case shape
+
+```dart
+abstract class UseCase<Type, Param> {
+  Future<Either<Failure, Type>> call([Param param]);
+}
+
+class NoParam{}
+
+```
+
+ ### and the fetch featured books use case will be like :
+
+``` dart
+class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
+  final HomeRepo homeRepo;
+  FetchFeaturedBooksUseCase(this.homeRepo);
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> call(
+      [NoParameter? parameter]) async {
+    return await homeRepo.fecthFeaturedBooks();
+  }
+}
+
 ```
 
 
