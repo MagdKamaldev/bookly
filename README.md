@@ -1,6 +1,6 @@
 # clean_arch_bookly_app
 
-## A) Domain Layer
+## A- Domain Layer
 
 
 ### [1-the first step is the entity which is the core business object](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/entities/book_entity.dart)
@@ -39,7 +39,20 @@ abstract class HomeRepo {
 ```
 
 
-### 5-
+### 5- [then we create a usecase for each feature which is the core business logic](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/use_cases/fetch_featured_books_use_case.dart)
+
+```dart 
+
+class FetchFeaturedBooksUseCase {
+  final HomeRepo homeRepo;
+
+  FetchFeaturedBooksUseCase({required this.homeRepo});
+
+  Future<Either<Failure, List<BookEntity>>> call() async {
+    return await homeRepo.fecthFeaturedBooks();
+  }
+}
+```
 
 
 
