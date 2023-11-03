@@ -96,6 +96,42 @@ class FetchNewestBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
 
 ```
 
+## B- Data Layer
+
+### 1- [we create the model using the vs code extention Json to Dart Model](https://marketplace.visualstudio.com/items?itemName=hirantha.json-to-dart)
+
+### 2- [then we make the relation between book Model and book Entity](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/models/book_model/book_model.dart)
+
+``` dart
+class BookModel extends BookEntity {
+  String? kind;
+  String? id;
+  String? etag;
+  String? selfLink;
+  VolumeInfo? volumeInfo;
+  SaleInfo? saleInfo;
+  AccessInfo? accessInfo;
+  SearchInfo? searchInfo;
+
+  BookModel({
+    this.kind,
+    this.id,
+    this.etag,
+    this.selfLink,
+    this.volumeInfo,
+    this.saleInfo,
+    this.accessInfo,
+    this.searchInfo,
+  }) : super(
+          bookId: id!,
+          image: volumeInfo!.imageLinks!.thumbnail ?? '',
+          title: volumeInfo.title!,
+          authorName: volumeInfo.authors!.first,
+          price: 0.0,
+        );
+}
+```
+
 
 
 
