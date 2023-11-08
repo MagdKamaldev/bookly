@@ -3,7 +3,7 @@
 ## A- Domain Layer
 
 
-### [1-the first step is the entity which is the core business object](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/entities/book_entity.dart)
+### [1-The first step is the entity which is the core business object](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/entities/book_entity.dart)
 
 ``` dart
 BookEntity(
@@ -14,7 +14,7 @@ BookEntity(
   required this.price,});
 ``` 
 
-### [2-then we create a repo for each feature which just determines what is going to happen not how ](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/repos/home_repo.dart)
+### [2-Then we create a repo for each feature which just determines what is going to happen not how ](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/repos/home_repo.dart)
 
 ``` dart
 abstract class HomeRepo {
@@ -23,13 +23,13 @@ abstract class HomeRepo {
 }
 ``` 
 
-### [3-we created a failure class to handle errors](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/errors/failure.dart)
+### [3-We created a failure class to handle errors](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/errors/failure.dart)
 
 ``` dart
 class Failure{}
 ```
 
-### [4-then we import dartz package to use Either class to handle success or failure cases and update the repo to be like](https://github.com/MagdKamaldev/bookly/blob/main/pubspec.yaml)
+### [4-Then we import dartz package to use Either class to handle success or failure cases and update the repo to be like](https://github.com/MagdKamaldev/bookly/blob/main/pubspec.yaml)
 
 ``` dart
 abstract class HomeRepo {
@@ -39,7 +39,7 @@ abstract class HomeRepo {
 ```
 
 
-### 5- [then we create a usecase for each feature](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/use_cases/fetch_featured_books_use_case.dart)
+### 5- [Then we create a usecase for each feature](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/use_cases/fetch_featured_books_use_case.dart)
 
 ```dart 
 
@@ -54,7 +54,7 @@ class FetchFeaturedBooksUseCase {
 }
 ```
 
-### 6- we use generic use case to handle use case shape
+### 6- We use generic use case to handle use case shape
 
 ```dart
 abstract class UseCase<Type, Param> {
@@ -65,7 +65,7 @@ class NoParam{}
 
 ```
 
- ### and the fetch featured books use case will be like :
+ ### The fetch featured books use case will be like :
 
 ``` dart
 class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
@@ -98,9 +98,9 @@ class FetchNewestBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
 
 ## B- Data Layer
 
-### 1- [we create the model using the vs code extention Json to Dart Model](https://marketplace.visualstudio.com/items?itemName=hirantha.json-to-dart)
+### 1- [We create the model using the vs code extention Json to Dart Model](https://marketplace.visualstudio.com/items?itemName=hirantha.json-to-dart)
 
-### 2- [then we make the relation between book Model and book Entity](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/models/book_model/book_model.dart)
+### 2- [Then we make the relation between book Model and book Entity](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/models/book_model/book_model.dart)
 
 ``` dart
 class BookModel extends BookEntity {
@@ -129,6 +129,28 @@ class BookModel extends BookEntity {
           authorName: volumeInfo.authors!.first,
           price: 0.0,
         );
+}
+```
+### 3- [We created the api service class to handle get requests using dio](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/utils/api_services.dart)
+``` dart 
+class ApiService {
+  final Dio _dio;
+  final baseUrl = "https://www.googleapis.com/books/v1/";
+  ApiService(this._dio);
+
+  Future<Map<String, dynamic>> get({required String endpoint}) async {
+    var response = await _dio.get("$baseUrl$endpoint");
+    return response.data;
+  }
+}
+```
+
+### 4- [We create the Home Remote Data Source abstract class to handle API calls](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/data_sources/home_remote_data_source.dart)
+
+``` dart 
+abstract class HomeRemoteDataSource {
+  Future<List<BookModel>> fetchFeaturedBooks();
+  Future<List<BookModel>> fetchNewestBooks();
 }
 ```
 
