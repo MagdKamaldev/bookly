@@ -145,12 +145,89 @@ class ApiService {
 }
 ```
 
-### 4- [We create the Home Remote Data Source abstract class to handle API calls](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/data_sources/home_remote_data_source.dart)
+### 4- [We create the Home Remote Data Source abstract class](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/data_sources/home_remote_data_source.dart)
 
 ``` dart 
 abstract class HomeRemoteDataSource {
   Future<List<BookModel>> fetchFeaturedBooks();
   Future<List<BookModel>> fetchNewestBooks();
+}
+```
+
+### 5- [Then we create the Home Remote Data Source implementation class to handle API calls with fetch featured and newest books](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/data_sources/home_remote_data_source.dart)
+
+``` dart
+class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
+  final ApiService apiService;
+  HomeRemoteDataSourceImplementation(this.apiService);
+
+  @override
+  Future<List<BookEntity>> fecthFeaturedBooks() async {
+    var data = await apiService.get(
+        endpoint:
+            "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
+
+    List<BookEntity> books = getBooksList(data);
+    saveBooksData(books, kFeaturedBox);
+    return books;
+  }
+
+  @override
+  Future<List<BookEntity>> fetchNewestBooks() async {
+    var data = await apiService.get(
+        endpoint:
+            "volumes?q=computer science&Filtering=free-ebooks&Sorting=newest&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
+
+    List<BookEntity> books = getBooksList(data);
+    saveBooksData(books,kNewestBox);
+    return books;
+  }
+
+  List<BookEntity> getBooksList(Map<String, dynamic> data) {
+    List<BookEntity> books = [];
+    for (var bookMap in data["items"]) {
+      books.add(BookModel.fromJson(bookMap));
+    }
+    return books;
+  }
+}
+
+```
+
+### 6- [We create an adapter for the book entity and then register it in main and oppen box to save remote data source in it](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/domain/entities/book_entity.dart)
+
+``` dart
+import 'package:hive/hive.dart';
+part 'book_entity.g.dart';
+
+@HiveType(typeId: 0)
+class BookEntity {
+@HiveField(0)
+  final String bookId;
+@HiveField(1)
+  final String? image;
+@HiveField(2)
+  final String title;
+@HiveField(3)
+  final String? authorName;
+@HiveField(4)
+  final num? price;
+
+  BookEntity(
+      {required this.bookId,
+      required this.image,
+      required this.title,
+      required this.authorName,
+      required this.price,});
+}
+```
+``` dart 
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(BookEntityAdapter());
+  await Hive.openBox<BookEntity>(kFeaturedBox);
+  await Hive.openBox<BookEntity>(kNewestBox);
+  runApp(const Bookly());
 }
 ```
 
