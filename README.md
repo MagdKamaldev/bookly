@@ -231,6 +231,103 @@ void main() async {
 }
 ```
 
+### 7-[we created a method to save books with hive and then implemented it in home remote data source](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/utils/functions/save_books.dart)
+
+``` dart
+void saveBooksData(List<BookEntity> books, String boxName) async {
+  var box = await Hive.openBox<BookEntity>(boxName);
+  box.clear();
+  box.addAll(books);
+}
+```
+``` dart
+  Future<List<BookEntity>> fecthFeaturedBooks() async {
+    var data = await apiService.get(
+        endpoint:
+            "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc");
+
+    List<BookEntity> books = getBooksList(data);
+    saveBooksData(books, kFeaturedBox);
+    return books;
+  }
+```
+### 8- [We implement home local data source](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/data_sources/home_local_data_source.dart)
+
+``` dart
+class HomeLocalDataSourceImplementation extends HomeLocalDataSource {
+  @override
+  List<BookEntity> fetchFeaturedBooks() {
+    var box = Hive.box<BookEntity>(kFeaturedBox);
+    return box.values.toList();
+  }
+
+  @override
+  List<BookEntity> fetchNewestBooks() {
+     var box = Hive.box<BookEntity>(kNewestBox);
+    return box.values.toList();
+  }
+}
+```
+
+### 9 - [we implemented home repo](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/repos/home_repo_implementation.dart)
+
+``` dart 
+class HomeRepoImplementation extends HomeRepo {
+  final HomeRemoteDataSource remoteDataSource;
+  final HomeLocalDataSource localDataSource;
+  HomeRepoImplementation(
+      {required this.remoteDataSource, required this.localDataSource});
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks() async {
+    try {
+      final books = await remoteDataSource.fecthFeaturedBooks();
+      return Right(books);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> fecthNewestBooks() async {
+    try {
+      final books = await remoteDataSource.fetchNewestBooks();
+      return Right(books);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+}
+```
+### 10- [We create a server exception class to handle errors](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/errors/failure.dart)
+
+``` dart
+class ServerFailure extends Failure {
+  ServerFailure(super.message);
+  factory ServerFailure.fromDioError(DioError e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        return ServerFailure("connection Timeout with api server");
+      case DioExceptionType.sendTimeout:
+        return ServerFailure("send Timeout with api server");
+      case DioExceptionType.receiveTimeout:
+        return ServerFailure("receive Timeout with api server");
+      case DioExceptionType.badCertificate:
+        return ServerFailure("bad Certificate with api server");
+      case DioExceptionType.badResponse:
+        return ServerFailure.fromResponse(
+            e.response!.statusCode!, e.response!.data);
+      case DioExceptionType.cancel:
+        return ServerFailure("Request cancelled with api server");
+      case DioExceptionType.connectionError:
+        return ServerFailure("No Connection with api server");
+      case DioExceptionType.unknown:
+        return ServerFailure("Unknown Error with api server");
+    }
+  }
+  ```
+
+  
 
 
 
