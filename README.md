@@ -98,6 +98,7 @@ class FetchNewestBooksUseCase extends UseCase<List<BookEntity>, NoParameter> {
 
 ## B- Data Layer
 
+
 ### 1- [We create the model using the vs code extention Json to Dart Model](https://marketplace.visualstudio.com/items?itemName=hirantha.json-to-dart)
 
 ### 2- [Then we make the relation between book Model and book Entity](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/models/book_model/book_model.dart)
@@ -372,6 +373,10 @@ class ServerFailure extends Failure {
   }
 }
 ```
+## C- Presentation Layer
+ 
+
+
   
 
 
