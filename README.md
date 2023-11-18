@@ -375,6 +375,31 @@ class ServerFailure extends Failure {
 ```
 ## C- Presentation Layer
  
+### 1- [we created the fetch featured books states](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/manager/feartured_books_cubit/featured_books_state.dart)
+
+``` dart
+part of 'featured_books_cubit.dart';
+
+@immutable
+abstract class FeaturedBooksState {}
+
+class FeaturedBooksInitial extends FeaturedBooksState {}
+
+class FeaturedBooksLoading extends FeaturedBooksState {}
+
+class FeaturedBooksSuccess extends FeaturedBooksState {
+  final List<BookEntity> books;
+
+  FeaturedBooksSuccess(this.books);
+}
+
+class FeaturedBooksFailure extends FeaturedBooksState {
+  final String errorMessage;
+
+  FeaturedBooksFailure(this.errorMessage);
+}
+```
+
 
 
   
