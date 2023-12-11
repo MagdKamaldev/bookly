@@ -550,9 +550,50 @@ class FeaturedBooksListViewBlockBuilder extends StatelessWidget {
 }
 ```
 
+### 8- [We dislpayed the image by updating the featured list view and custom book image as follows](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/custom_book_item.dart)
+``` dart
+class FeaturedBooksListView extends StatelessWidget {
+  const FeaturedBooksListView({Key? key, required this.books})
+      : super(key: key);
+  final List<BookEntity> books;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .3,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: books.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: CustomBookImage(
+                imageUrl: books[index].image ?? "",
+              ),
+            );
+          }),
+    );
+  }
+}
 
+class CustomBookImage extends StatelessWidget {
+  final String imageUrl;
+  const CustomBookImage({Key? key, required this.imageUrl}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 2.6 / 4,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.fill,
+          )),
+    );
+  }
+}
 
+```
   
 
 
