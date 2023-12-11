@@ -400,6 +400,95 @@ class FeaturedBooksFailure extends FeaturedBooksState {
 }
 ```
 
+### 2- [we created the fetch featured books cubit and added fetch faetured books function](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/manager/feartured_books_cubit/featured_books_cubit.dart) 
+
+``` dart
+ final FetchFeaturedBooksUseCase fetchFeaturedBooksUseCase;
+  Future<void> fetchFeaturedBooks() async {
+    emit(FeaturedBooksLoading());
+
+    var result = await fetchFeaturedBooksUseCase.call();
+
+    result.fold((failure) {
+      emit(FeaturedBooksFailure(failure.message));
+    }, (books) {
+      emit(FeaturedBooksSuccess(books));
+    });
+  }
+```
+
+### 3- [And we do the same with fetch Newest books](https://github.com/MagdKamaldev/bookly/tree/main/lib/Features/home/presentation/manager/newest_books_cubit)
+
+``` dart
+
+ part of 'newest_books_cubit.dart';
+
+@immutable
+abstract class NewestBooksState {}
+
+class NewestBooksInitial extends NewestBooksState {}
+
+class NewestBooksLoading extends NewestBooksState {}
+
+class NewestBooksSuccess extends NewestBooksState {
+  final List<BookEntity> books;
+  NewestBooksSuccess(this.books);
+}
+
+class NewestBooksFailure extends NewestBooksState {
+  final String message;
+  NewestBooksFailure(this.message);
+}
+ 
+  final FetchNewestBooksUseCase fetchNewestBooksUseCase;
+  
+  Future<void> fetchNewestBooks() async {
+    emit(NewestBooksLoading());
+
+    var result = await fetchNewestBooksUseCase.call();
+
+    result.fold((failure) {
+      emit(NewestBooksFailure(failure.message));
+    }, (books) {
+      emit(NewestBooksSuccess(books));
+    });
+  }
+
+```
+
+### 4- [We created a MultiBloc provider and added the providers to it in the main file](https://github.com/MagdKamaldev/bookly/blob/main/lib/main.dart)
+
+``` dart
+ return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            return FeaturedBooksCubit(
+                FetchFeaturedBooksUseCase(getit.get<HomeRepoImplementaion>()));
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return NewestBooksCubit(
+                FetchNewestBooksUseCase(getit.get<HomeRepoImplementaion>()));
+          },
+        )
+      ],
+      child: MaterialApp.router(
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: kPrimaryColor,
+          textTheme:
+              GoogleFonts.montserratTextTheme(ThemeData.dark().textTheme),
+        ),
+      ),
+    );
+   
+  ```
+
+### 5- [We used get_it package to create service locators for api service and home repo implementation]()
+
 
 
   

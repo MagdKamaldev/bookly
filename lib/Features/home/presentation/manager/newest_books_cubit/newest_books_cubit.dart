@@ -1,6 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:bookly/Features/home/domain/entities/book_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/use_cases/fetch_newest_books.dart';
 part 'newest_books_state.dart';
 
