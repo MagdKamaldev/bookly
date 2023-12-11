@@ -524,7 +524,7 @@ class SimpleBlocObserver extends BlocObserver {
 Bloc.observer = SimpleBlocObserver();
 ```
 
-### 7- [We wrapped the Featured books listView with a block builder]()
+### 7- [We wrapped the Featured books listView with a block builder](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_books_lisr_view_block_builder.dart)
 ``` dart
 class FeaturedBooksListViewBlockBuilder extends StatelessWidget {
   const FeaturedBooksListViewBlockBuilder({
