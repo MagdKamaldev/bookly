@@ -487,7 +487,28 @@ class NewestBooksFailure extends NewestBooksState {
    
   ```
 
-### 5- [We used get_it package to create service locators for api service and home repo implementation]()
+### 5- [We used get_it package to create service locators for api service and home repo implementation](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/utils/functions/setup_service_locator.dart)
+
+``` dart
+//function
+final getit = GetIt.instance;
+void setupServiceLocator() {
+  getit.registerSingleton<ApiService>(ApiService(Dio()));
+  getit.registerSingleton<HomeRepoImplementaion>(HomeRepoImplementaion(
+      homeRemoteDataSource:
+          HomeRemoteDataSourceImplementation(getit.get<ApiService>()),
+      homeLocalDataSource: HomeLocalDataSourceImplementation()));
+}
+
+//in main function
+setupServiceLocator();
+
+//in provider
+ return FeaturedBooksCubit(
+                FetchFeaturedBooksUseCase(getit.get<HomeRepoImplementaion>()));
+  ```
+
+
 
 
 
