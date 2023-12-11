@@ -503,10 +503,26 @@ void setupServiceLocator() {
 //in main function
 setupServiceLocator();
 
-//in provider
+//in providers
  return FeaturedBooksCubit(
                 FetchFeaturedBooksUseCase(getit.get<HomeRepoImplementaion>()));
   ```
+
+### 6- [We created a simple bloc observer to notice state changes]() 
+
+``` dart
+//class 
+class SimpleBlocObserver extends BlocObserver {
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    log(change.toString());
+    super.onChange(bloc, change);
+  }
+}
+
+//in main function
+Bloc.observer = SimpleBlocObserver();
+```
 
 
 
