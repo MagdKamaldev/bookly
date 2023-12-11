@@ -23,10 +23,6 @@ void main() async {
   runApp(const Bookly());
 }
 
-
-
-
-
 class Bookly extends StatelessWidget {
   const Bookly({Key? key}) : super(key: key);
 
@@ -37,7 +33,8 @@ class Bookly extends StatelessWidget {
         BlocProvider(
           create: (context) {
             return FeaturedBooksCubit(
-                FetchFeaturedBooksUseCase(getit.get<HomeRepoImplementaion>()));
+                FetchFeaturedBooksUseCase(getit.get<HomeRepoImplementaion>()))
+              ..fetchFeaturedBooks();
           },
         ),
         BlocProvider(

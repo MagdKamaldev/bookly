@@ -508,7 +508,7 @@ setupServiceLocator();
                 FetchFeaturedBooksUseCase(getit.get<HomeRepoImplementaion>()));
   ```
 
-### 6- [We created a simple bloc observer to notice state changes]() 
+### 6- [We created a simple bloc observer to notice state changes](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/utils/simple_bloc_observer.dart) 
 
 ``` dart
 //class 
@@ -524,6 +524,31 @@ class SimpleBlocObserver extends BlocObserver {
 Bloc.observer = SimpleBlocObserver();
 ```
 
+### 7- [We wrapped the Featured books listView with a block builder]()
+``` dart
+class FeaturedBooksListViewBlockBuilder extends StatelessWidget {
+  const FeaturedBooksListViewBlockBuilder({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FeaturedBooksCubit, FeaturedBooksState>(
+      builder: (context, state) {
+        if (state is FeaturedBooksSuccess) {
+          return FeaturedBooksListView();
+        } else if (state is FeaturedBooksFailure) {
+          return Text(state.errorMessage); 
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+}
+```
 
 
 
