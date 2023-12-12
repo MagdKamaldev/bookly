@@ -595,7 +595,7 @@ class CustomBookImage extends StatelessWidget {
 
 ```
 
-### 9- [We started pagination by updating : Cubit , use cases , repo , remote data source , to accept value of page number and updates will be as follows]
+### 9- We started pagination by updating : Cubit , use cases , repo , remote data source , to accept value of page number and updates will be as follows
 
 ``` dart
 stract class HomeRemoteDataSource {
@@ -620,13 +620,6 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
     return books;
   }
 
-  import 'package:bookly/Features/home/data/data_sources/home_local_data_source.dart';
-import 'package:bookly/Features/home/data/data_sources/home_remote_data_source.dart';
-import 'package:bookly/Features/home/domain/entities/book_entity.dart';
-import 'package:bookly/Features/home/domain/repos/home_repo.dart';
-import 'package:bookly/core/errors/failure.dart';
-import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 
 class HomeRepoImplementaion extends HomeRepo {
   final HomeRemoteDataSource homeRemoteDataSource;
