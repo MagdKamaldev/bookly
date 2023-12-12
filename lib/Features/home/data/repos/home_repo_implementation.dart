@@ -1,5 +1,4 @@
 // ignore_for_file: unused_catch_clause, deprecated_member_use
-
 import 'package:bookly/Features/home/data/data_sources/home_local_data_source.dart';
 import 'package:bookly/Features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:bookly/Features/home/domain/entities/book_entity.dart';
@@ -16,7 +15,7 @@ class HomeRepoImplementaion extends HomeRepo {
       {required this.homeRemoteDataSource, required this.homeLocalDataSource});
 
   @override
-  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks() async {
+  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks({ int pageNumber = 0}) async {
     try {
       List<BookEntity> books = homeLocalDataSource.fetchFeaturedBooks();
       if (books.isNotEmpty) {

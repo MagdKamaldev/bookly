@@ -594,10 +594,178 @@ class CustomBookImage extends StatelessWidget {
 }
 
 ```
+
+### 9- [We started pagination by updating : Cubit , use cases , repo , remote data source , to accept value of page number and updates will be as follows]
+
+``` dart
+stract class HomeRemoteDataSource {
+  Future<List<BookEntity>> fecthFeaturedBooks({int pageNumber = 0});
+  Future<List<BookEntity>> fetchNewestBooks();
+}
+
+class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
+  final ApiService apiService;
+  HomeRemoteDataSourceImplementation(this.apiService);
+
+  @override
+  Future<List<BookEntity>> fecthFeaturedBooks({
+    int pageNumber = 0,
+  }) async {
+    var data = await apiService.get(
+        endpoint:
+            "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc&startIndex=${pageNumber * 10}}");
+
+    List<BookEntity> books = getBooksList(data);
+    saveBooksData(books, kFeaturedBox);
+    return books;
+  }
+
+  import 'package:bookly/Features/home/data/data_sources/home_local_data_source.dart';
+import 'package:bookly/Features/home/data/data_sources/home_remote_data_source.dart';
+import 'package:bookly/Features/home/domain/entities/book_entity.dart';
+import 'package:bookly/Features/home/domain/repos/home_repo.dart';
+import 'package:bookly/core/errors/failure.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+
+class HomeRepoImplementaion extends HomeRepo {
+  final HomeRemoteDataSource homeRemoteDataSource;
+  final HomeLocalDataSource homeLocalDataSource;
+
+  HomeRepoImplementaion(
+      {required this.homeRemoteDataSource, required this.homeLocalDataSource});
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks({ int pageNumber = 0}) async {
+    try {
+      List<BookEntity> books = homeLocalDataSource.fetchFeaturedBooks();
+      if (books.isNotEmpty) {
+        return right(books);
+      }
+      books = await homeRemoteDataSource.fecthFeaturedBooks();
+      return right(books);
+    } on Exception catch (e) {
+      if (e is DioError) {
+        return left(ServerFailure.fromDioError(e));
+      } 
+        return left(ServerFailure(e.toString()));
+      
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> fecthNewestBooks() async {
+    try {
+      List<BookEntity> books;
+      books = homeLocalDataSource.fetchNewestBooks();
+      if (books.isNotEmpty) {
+        return right(books);
+      }
+      books = await homeRemoteDataSource.fetchNewestBooks();
+      return right(books);
+    } on Exception catch (e) {
+      if (e is DioError) {
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
+}
+
+abstract class HomeRepo {
+  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks({int pageNumber = 0});
+  Future<Either<Failure, List<BookEntity>>> fecthNewestBooks();
+}
+
+
+class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity>, int> {
+  final HomeRepo homeRepo;
+  FetchFeaturedBooksUseCase(this.homeRepo);
+
+  @override
+  Future<Either<Failure, List<BookEntity>>> call(
+      [int ? parameter = 0]) async {
+    return await homeRepo.fecthFeaturedBooks(pageNumber: parameter!);
+  }
+}
+
+
+  Future<void> fetchFeaturedBooks({int pageNumber = 0,}) async {
+    emit(FeaturedBooksLoading());
+
+    var result = await fetchFeaturedBooksUseCase.call(pageNumber);
+
+    result.fold((failure) {
+      emit(FeaturedBooksFailure(failure.message));
+    }, (books) {
+      emit(FeaturedBooksSuccess(books));
+    });
+  }
+
+```
   
+### 10- [We updated featured list view to handle pagination](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_list_view.dart)
 
+``` dart
 
+class FeaturedBooksListView extends StatefulWidget {
+  const FeaturedBooksListView({Key? key, required this.books})
+      : super(key: key);
 
+  final List<BookEntity> books;
 
+  @override
+  State<StatefulWidget> createState() => _FeaturedBooksListViewState();
+}
 
+class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
+  late final ScrollController _scrollController;
+
+  var nextPage = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    var currentPositions = _scrollController.position.pixels;
+    var maxScrollLength = _scrollController.position.maxScrollExtent;
+    if (currentPositions >= 0.7 * maxScrollLength) {
+      BlocProvider.of<FeaturedBooksCubit>(context)
+          .fetchFeaturedBooks(pageNumber: nextPage);
+      nextPage++;
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .3,
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: widget.books.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CustomBookImage(
+              imageUrl: widget.books[index].image ?? '',
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+  
+  ```
 
