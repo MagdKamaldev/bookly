@@ -785,5 +785,72 @@ class HomeLocalDataSourceImplementation extends HomeLocalDataSource {
   }
 }
 
-  ```
+```
 
+### 12- [We updated the featured list view logic to be like](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_list_view.dart)
+
+``` dart
+class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
+  late final ScrollController _scrollController;
+
+  var nextPage = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    var currentPositions = _scrollController.position.pixels;
+    var maxScrollLength = _scrollController.position.maxScrollExtent;
+    if (currentPositions >= 0.7 * maxScrollLength) {
+      BlocProvider.of<FeaturedBooksCubit>(context).fetchFeaturedBooks(pageNumber: nextPage++);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .3,
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: widget.books.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CustomBookImage(
+              imageUrl: widget.books[index].image ?? '',
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+### 13- [We update scrollListener function to reduce the number of requests being triggered](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_list_view.dart)
+
+``` dart
+  void _scrollListener() async{
+    var currentPositions = _scrollController.position.pixels;
+    var maxScrollLength = _scrollController.position.maxScrollExtent;
+    if (currentPositions >= 0.7 * maxScrollLength) {
+      if (!isLoading) {
+        isLoading = true;
+        await BlocProvider.of<FeaturedBooksCubit>(context)
+            .fetchFeaturedBooks(pageNumber: nextPage++);
+        isLoading = false;
+      }
+    }
+  }
+```
