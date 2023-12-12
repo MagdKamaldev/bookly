@@ -595,9 +595,10 @@ class CustomBookImage extends StatelessWidget {
 
 ```
 
-### 9- We started pagination by updating : Cubit , use cases , repo , remote data source , to accept value of page number and updates will be as follows
+### 9- We started pagination by updating : cubit , use cases , repo implementation , remote data source , to accept the value of page number and updates will be as follows
 
 ``` dart
+// remote data source
 stract class HomeRemoteDataSource {
   Future<List<BookEntity>> fecthFeaturedBooks({int pageNumber = 0});
   Future<List<BookEntity>> fetchNewestBooks();
@@ -619,7 +620,9 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
     saveBooksData(books, kFeaturedBox);
     return books;
   }
+}
 
+//repo implementation
 
 class HomeRepoImplementaion extends HomeRepo {
   final HomeRemoteDataSource homeRemoteDataSource;
@@ -669,6 +672,8 @@ abstract class HomeRepo {
   Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks({int pageNumber = 0});
   Future<Either<Failure, List<BookEntity>>> fecthNewestBooks();
 }
+
+//use case
 
 
 class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity>, int> {
