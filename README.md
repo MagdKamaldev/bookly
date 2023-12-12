@@ -719,8 +719,6 @@ class FeaturedBooksListView extends StatefulWidget {
 class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
   late final ScrollController _scrollController;
 
-  var nextPage = 1;
-
   @override
   void initState() {
     super.initState();
@@ -733,8 +731,7 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
     var maxScrollLength = _scrollController.position.maxScrollExtent;
     if (currentPositions >= 0.7 * maxScrollLength) {
       BlocProvider.of<FeaturedBooksCubit>(context)
-          .fetchFeaturedBooks(pageNumber: nextPage);
-      nextPage++;
+          .fetchFeaturedBooks();
     }
   }
 
@@ -765,5 +762,28 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
   }
 }
   
+  ```
+
+### 11- [We Add Pagination in local data source implementation to be like](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/data/data_sources/home_local_data_source.dart)
+
+``` dart
+class HomeLocalDataSourceImplementation extends HomeLocalDataSource {
+  @override
+  List<BookEntity> fetchFeaturedBooks({
+    int pageNumber = 0,
+  }) {
+    int startIndex = pageNumber * 10;
+    int endIndex = (pageNumber + 1) * 10;
+
+    var box = Hive.box<BookEntity>(kFeaturedBox);
+    List<BookEntity> allBooks = box.values.toList();
+
+    if (startIndex >= allBooks.length || endIndex > allBooks.length) {
+      return [];
+    }
+    return allBooks.sublist(startIndex, endIndex);
+  }
+}
+
   ```
 

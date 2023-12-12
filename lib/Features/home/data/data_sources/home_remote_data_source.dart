@@ -18,8 +18,8 @@ class HomeRemoteDataSourceImplementation extends HomeRemoteDataSource {
     int pageNumber = 0,
   }) async {
     var data = await apiService.get(
-        endpoint:
-            "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc&startIndex=${pageNumber * 10}}");
+        endpoint: "volumes?q=computer science&Filtering=free-ebooks&key=AIzaSyAxT34xJRaWTN84cubUJqFs-CoN9HjUzPc&startIndex=${pageNumber * 10}"
+        );
 
     List<BookEntity> books = getBooksList(data);
     saveBooksData(books, kFeaturedBox);

@@ -15,13 +15,13 @@ class HomeRepoImplementaion extends HomeRepo {
       {required this.homeRemoteDataSource, required this.homeLocalDataSource});
 
   @override
-  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks({ int pageNumber = 0}) async {
+  Future<Either<Failure, List<BookEntity>>> fecthFeaturedBooks({int pageNumber = 0}) async {
     try {
-      List<BookEntity> books = homeLocalDataSource.fetchFeaturedBooks();
+      List<BookEntity> books = homeLocalDataSource.fetchFeaturedBooks(pageNumber: pageNumber);
       if (books.isNotEmpty) {
         return right(books);
       }
-      books = await homeRemoteDataSource.fecthFeaturedBooks();
+      books = await homeRemoteDataSource.fecthFeaturedBooks(pageNumber: pageNumber);
       return right(books);
     } on Exception catch (e) {
       if (e is DioError) {
