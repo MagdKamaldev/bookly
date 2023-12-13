@@ -993,7 +993,7 @@ class _CustomFadingWidgetState extends State<CustomFadingWidget>
 }
 ```
 
-### 18- [We created custom indicator as replacement for book image and fetch featured books listview replacement for loading state ]()
+### 18- [We created custom indicator as replacement for book image and fetch featured books listview replacement for loading state ](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/custom_book_image_loading_indicator.dart)
 
 ``` dart
 class CustomBookImageLoadingIndicator extends StatelessWidget {
@@ -1032,6 +1032,37 @@ class FeaturedBooksListViewLoadingIndicator extends StatelessWidget {
     );
   }
 }
+
+```
+
+### 19- [We updated the featured list view Bloc Consumer to handle loading state as follows](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_books_lisr_view_block_builder.dart)
+``` dart
+  Widget build(BuildContext context) {
+    return BlocConsumer<FeaturedBooksCubit, FeaturedBooksState>(
+      listener: (BuildContext context, FeaturedBooksState state) {
+        if (state is FeaturedBooksSuccess) {
+          books.addAll(state.books);
+        }
+
+        if (state is FeaturedBooksPaginationFailure) {
+          errorSnackbar(context, state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        if (state is FeaturedBooksSuccess ||
+            state is FeaturedBooksPaginationLoading ||
+            state is FeaturedBooksPaginationFailure) {
+          return FeaturedBooksListView(
+            books: books,
+          );
+        } else if (state is FeaturedBooksFailure) {
+          return Text(state.errorMessage);
+        } else {
+         return const FeaturedBooksListViewLoadingIndicator();
+        }
+      },
+    );
+  }
 
 ```
 
