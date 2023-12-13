@@ -9,7 +9,10 @@
 
 ### To Get To Know more you might read [This Medium Article](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0)
 
-### And it seperates the app for Three Layers:
+
+
+
+### it seperates the app for Three Layers:
 
 ## A- Domain Layer
 
