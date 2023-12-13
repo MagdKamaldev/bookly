@@ -910,7 +910,7 @@ class _FeaturedBooksListViewBlockBuilderState
 }
 ```
 
-### 16- [We Created an errorSnackBar Builder widget  And Error State for Pagination to handle errors of pagination as follows]()
+### 16- [We Created an errorSnackBar Builder widget  And Error State for Pagination to handle errors of pagination as follows](https://github.com/MagdKamaldev/bookly/blob/main/lib/core/utils/functions/build_error_snack_bar.dart)
 ``` dart
 
 class FeaturedBooksPaginationFailure extends FeaturedBooksState {
@@ -952,4 +952,5 @@ void errorSnackbar(BuildContext context, String  errorMessage) {
       },
 
 ```      
+
 
