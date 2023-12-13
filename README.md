@@ -993,4 +993,46 @@ class _CustomFadingWidgetState extends State<CustomFadingWidget>
 }
 ```
 
+### 18- [We created custom indicator as replacement for book image and fetch featured books listview replacement for loading state ]()
+
+``` dart
+class CustomBookImageLoadingIndicator extends StatelessWidget {
+  const CustomBookImageLoadingIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 2.6 / 4,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: const SizedBox()),
+    );
+  }
+}
+
+class FeaturedBooksListViewLoadingIndicator extends StatelessWidget {
+  const FeaturedBooksListViewLoadingIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  CustomFadingWidget(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * .3,
+        child: ListView.builder(     
+          itemCount: 15,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: CustomBookImageLoadingIndicator(),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+```
+
 
