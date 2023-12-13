@@ -854,3 +854,57 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
     }
   }
 ```
+### 14- [We added a new state class to handle pagination Loading State and we used it in cubit like this](https://github.com/MagdKamaldev/bookly/tree/main/lib/Features/home/presentation/manager/feartured_books_cubit)
+
+``` dart
+ if (pageNumber == 0){
+      emit(FeaturedBooksLoading());
+    }else{
+      emit(FeaturedBooksPaginationLoading());
+    }
+    
+```
+
+### 15- [We updated the featured list view block builder to handle pagination loading state and new new books to listview ](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_books_lisr_view_block_builder.dart)
+``` dart
+class FeaturedBooksListViewBlockBuilder extends StatefulWidget {
+  const FeaturedBooksListViewBlockBuilder({
+    super.key,
+  });
+
+  @override
+  State<FeaturedBooksListViewBlockBuilder> createState() =>
+      _FeaturedBooksListViewBlockBuilderState();
+}
+
+class _FeaturedBooksListViewBlockBuilderState
+    extends State<FeaturedBooksListViewBlockBuilder> {
+  List<BookEntity> books = [];
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<FeaturedBooksCubit, FeaturedBooksState>(
+       listener: (BuildContext context, FeaturedBooksState state) {  
+        if (state is FeaturedBooksSuccess) {
+          setState(() {
+            books.addAll(state.books);
+          });
+        }
+       },
+      builder: (context, state) {
+        if (state is FeaturedBooksSuccess ||
+            state is FeaturedBooksPaginationLoading) {
+          return FeaturedBooksListView(
+            books: books,
+          );
+        } else if (state is FeaturedBooksFailure) {
+          return Text(state.errorMessage);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+}
+```
