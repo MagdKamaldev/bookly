@@ -857,6 +857,9 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
 ### 14- [We added a new state class to handle pagination Loading State and we used it in cubit like this](https://github.com/MagdKamaldev/bookly/tree/main/lib/Features/home/presentation/manager/feartured_books_cubit)
 
 ``` dart
+ 
+class FeaturedBooksPaginationLoading extends FeaturedBooksState {}
+
  if (pageNumber == 0){
       emit(FeaturedBooksLoading());
     }else{
@@ -865,7 +868,7 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
     
 ```
 
-### 15- [We updated the featured list view block builder to handle pagination loading state and new new books to listview ](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_books_lisr_view_block_builder.dart)
+### 15- [We updated the featured list view block builder (which will be a block consumer not builder) to handle pagination loading state and new new books to listview ](https://github.com/MagdKamaldev/bookly/blob/main/lib/Features/home/presentation/views/widgets/featured_books_lisr_view_block_builder.dart)
 ``` dart
 class FeaturedBooksListViewBlockBuilder extends StatefulWidget {
   const FeaturedBooksListViewBlockBuilder({
@@ -906,3 +909,47 @@ class _FeaturedBooksListViewBlockBuilderState
   }
 }
 ```
+
+### 16- [We Created an errorSnackBar Builder widget  And Error State for Pagination to handle errors of pagination as follows]()
+``` dart
+
+class FeaturedBooksPaginationFailure extends FeaturedBooksState {
+  final String errorMessage;
+
+  FeaturedBooksPaginationFailure(this.errorMessage);
+}
+
+ result.fold((failure) {
+      if (pageNumber == 0) {
+        emit(FeaturedBooksFailure(failure.message));
+      }
+      emit(FeaturedBooksPaginationFailure(failure.message));
+    }, (books) {
+      emit(FeaturedBooksSuccess(books));
+    });
+
+void errorSnackbar(BuildContext context, String  errorMessage) {
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 3),
+        content: Text(
+          errorMessage,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+ listener: (BuildContext context, FeaturedBooksState state) {
+        if (state is FeaturedBooksSuccess) {
+          books.addAll(state.books);
+        }
+
+        if (state is FeaturedBooksPaginationFailure) {
+          errorSnackbar(context, state.errorMessage);
+        }
+      },
+
+```      
+

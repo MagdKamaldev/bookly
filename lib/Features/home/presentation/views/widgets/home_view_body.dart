@@ -21,7 +21,7 @@ class HomeViewBody extends StatelessWidget {
                     horizontal: 30,
                   ),
                   child: CustomAppBar()),
-              FeaturedBooksListViewBlockBuilder(),
+              FeaturedBooksListViewBlockConsumer(),
               SizedBox(
                 height: 50,
               ),
