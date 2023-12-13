@@ -1,4 +1,13 @@
-# clean_arch_bookly_app
+# Deep Dive into Clean Architecture in Flutter Arabic
+
+
+## what is clean architecture ?
+
+### Clean architecture is a software design philosophy that separates the elements of a design into ring levels. An important goal of clean architecture is to provide developers with a way to organize code in such a way that it encapsulates the business logic but keeps it separate from the delivery mechanism.
+
+![Alt text](assets/images/clean_arch.png)
+
+### To Get To Know more you might read [This Medium Article](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0)
 
 ## A- Domain Layer
 
